@@ -1,14 +1,14 @@
-# pingu
+# pong
 Application for Queue , using swoole and Lamins // Mezzio
 
-# Installing DotKernel `pingu`
+# Installing DotKernel `pong`
 
-- [Installing DotKernel `pingu`](#installing-dotkernel-pingu)
+- [Installing DotKernel `pong`](#installing-dotkernel-pong)
     - [Installation](#installation)
         - [Composer](#composer)
-    - [Choose a destination path for DotKernel `pingu` installation](#choose-a-destination-path-for-dotkernel-pingu-installation)
-    - [Installing the `pingu` Composer package](#installing-the-pingu-composer-package)
-        - [Installing DotKernel pingu](#installing-dotkernel-pingu)
+    - [Choose a destination path for DotKernel `pong` installation](#choose-a-destination-path-for-dotkernel-pong-installation)
+    - [Installing the `pong` Composer package](#installing-the-pong-composer-package)
+        - [Installing DotKernel pong](#installing-dotkernel-pong)
     - [Configuration - First Run](#configuration---first-run)
     - [Testing (Running)](#testing-running)
 
@@ -21,23 +21,23 @@ Installation instructions:
 
 > If you have never used composer before make sure you read the [`Composer Basic Usage`](https://getcomposer.org/doc/01-basic-usage.md) section in Composer's documentation
 
-## Choosing an installation path for DotKernel `pingu` 
+## Choosing an installation path for DotKernel `pong` 
 
 Example:
 
-- absolute path `/var/www/pingu`
-- or relative path `pingu` (equivalent with `./pingu`)
+- absolute path `/var/www/pong`
+- or relative path `pong` (equivalent with `./pong`)
 
-## Installing DotKernel `pingu`
+## Installing DotKernel `pong`
 
-After choosing the path for DotKernel (`pingu` will be used for the remainder of this example) it must be installed. 
+After choosing the path for DotKernel (`pong` will be used for the remainder of this example) it must be installed. 
 
-#### Installing DotKernel `pingu` using git clone
+#### Installing DotKernel `pong` using git clone
 
 This method requires more manual input, but it ensures that the default branch is installed, even if it is not released. Run the following command:
 
 ```bash
-$ git clone https://github.com/dotkernel/pingu.git .
+$ git clone https://github.com/dotkernel/pong.git .
 ```
 
 The dependencies have to be installed separately, by running this command
@@ -49,11 +49,9 @@ The setup asks for configuration settings regarding injections (type `0` and hit
 
 ## Configuration - First Run
 
-- Remove the `.dist` extension from the files `config/autoload/local.php.dist`, `config/autoload/mail.local.php.dist`, `config/autoload/notification.local.php.dist`, `config/autoload/redis.local.php.dist`, `config/autoload/swoole.local.php.dist`
+- Remove the `.dist` extension from the files `config/autoload/local.php.dist`, `config/autoload/notification.local.php.dist`, `config/autoload/redis.local.php.dist`, `config/autoload/swoole.local.php.dist`
 - Edit `config/autoload/local.php` according to your dev machine and fill in the `database` configuration
 - Edit `config/autoload/notification.php` by filling the 'protocol' and 'host' configuration
-- Add smtp credentials in `config/autoload/mail.local.php` if you want your application to send mails on registration etc.
-- Create `data/logs` folder and leave it empty
 
 > Charset recommendation: utf8mb4_general_ci  
 
@@ -85,7 +83,7 @@ $ php bin/clear-config-cache.php
 ```bash
 app-main.service
 [Unit]
-Description=pingu startup service
+Description=pong startup service
 StartLimitIntervalSec=1
 
 [Service]
@@ -139,7 +137,7 @@ WantedBy=app-main.service
 ```bash
 app-swoole.service
 [Unit]
-Description=pingu startup service
+Description=pong startup service
 After=mysqld.service
 PartOf=app-main.service
 StartLimitIntervalSec=1
