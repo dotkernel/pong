@@ -24,13 +24,13 @@ return [
 
                 // Overwrite the default location of the pid file;
                 // required when you want to run multiple instances of your service in different ports:
-                'pid_file' => '/tmp/pingu.pid',
+                'pid_file' => '/tmp/pong.pid',
             ],
             // Since 2.1.0: Set the process name prefix.
             // The master process will be named `{prefix}-master`,
             // worker processes will be named `{prefix}-worker-{id}`,
             // and task worker processes will be named `{prefix}-task-worker-{id}`
-            'process-name' => 'pingu',
+            'process-name' => 'pong',
         ],
     ],
 ];

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Dot\Swoole;
 
-use Dot\Swoole\PidManager;
+use Dot\Swoole\Command\ProcessWorkerCommand;
+use Dot\Swoole\Command\ResultWorkerCommand;
+use Dot\Swoole\Factory\ProcessWorkerCommandFactory;
 use Dot\Swoole\Factory\PidManagerFactory;
+use Dot\Swoole\Factory\ResultWorkerCommandFactory;
 use Dot\Swoole\Factory\ServerFactory;
 use Swoole\Server as SwooleServer;
 use function extension_loaded;
@@ -14,10 +17,9 @@ class ConfigProvider
 {
     public function __invoke() : array
     {
-        $config = PHP_SAPI === 'cli' && extension_loaded('swoole')
+        $config = PHP_SAPI === 'cli' && extension_loaded('openswoole')
             ? ['dependencies' => $this->getDependencies()]
             : [];
-
         $config['dot-swoole'] = $this->getDefaultConfig();
 
         return $config;
@@ -51,6 +53,8 @@ class ConfigProvider
                 Command\StartCommand::class            => Command\StartCommandFactory::class,
                 Command\StatusCommand::class           => Command\StatusCommandFactory::class,
                 Command\StopCommand::class             => Command\StopCommandFactory::class,
+                ProcessWorkerCommand::class            => ProcessWorkerCommandFactory::class,
+                ResultWorkerCommand::class             => ResultWorkerCommandFactory::class,
                 PidManager::class                      => PidManagerFactory::class,
                 SwooleServer::class                    => ServerFactory::class,
             ]

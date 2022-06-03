@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Psr\Container\ContainerInterface;
 use Mezzio\Application;
 use Mezzio\MiddlewareFactory;
-use Fig\Http\Message\RequestMethodInterface as RequestMethod;
 
 /**
  * Setup routes with a single request method:
@@ -34,19 +33,5 @@ use Fig\Http\Message\RequestMethodInterface as RequestMethod;
  * );
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
-    $app->get('/', App\Handler\HomePageHandler::class, 'home');
-
-    $app->route(
-        '/notification',
-        Notification\Handler\NotificationHandler::class,
-        [
-            RequestMethod::METHOD_DELETE,
-            RequestMethod::METHOD_GET,
-            RequestMethod::METHOD_POST,
-            RequestMethod::METHOD_PATCH
-        ],
-        'notification'
-    );
-
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
 };

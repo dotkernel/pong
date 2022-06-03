@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace Dot\Swoole\Command;
 
+use Dot\Swoole\PidManager;
 use Symfony\Component\Console\Application as CommandLine;
-use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
 use function chdir;
 use function file_exists;
@@ -54,14 +54,15 @@ if (! file_exists($containerFile)) {
 
 $container = require $containerFile;
 
+$pidManager = $container->get(PidManager::class);
+
 // Create, populate, and run the CLI tooling
 $commandLine = new CommandLine('Dotkernel swoole web server');
 $commandLine->setAutoExit(true);
-$commandLine->setCommandLoader(new ContainerCommandLoader($container, [
-    'reload' => ReloadCommand::class,
-    'start'  => StartCommand::class,
-    'status' => StatusCommand::class,
-    'stop'   => StopCommand::class,
-]));
+
+$commandLine->add(new StartCommand($container));
+$commandLine->add(new ReloadCommand(SWOOLE_PROCESS));
+$commandLine->add(new StatusCommand($pidManager));
+$commandLine->add(new StopCommand($pidManager));
 
 $commandLine->run();

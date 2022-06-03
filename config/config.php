@@ -11,30 +11,19 @@ use Laminas\ConfigAggregator\PhpFileProvider;
 $cacheConfig = [
     'config_cache_path' => __DIR__ . '/../data/cache/config-cache.php',
 ];
-
 $aggregator = new ConfigAggregator([
-    \Laminas\HttpHandlerRunner\ConfigProvider::class,
-    \Mezzio\Router\FastRouteRouter\ConfigProvider::class,
     // Include cache configuration
     new ArrayProvider($cacheConfig),
 
-    \Mezzio\Helper\ConfigProvider::class,
-    \Mezzio\ConfigProvider::class,
-    \Mezzio\Router\ConfigProvider::class,
-    \Laminas\Mail\ConfigProvider::class,
-    \Mezzio\Twig\ConfigProvider::class,
+    //dot module config
+    \Dot\Cli\ConfigProvider::class,
 
     // Log module config
     Laminas\Log\ConfigProvider::class,
 
     // Default App module config
-    App\ConfigProvider::class,
     Notification\ConfigProvider::class,
     \Dot\Swoole\ConfigProvider::class,
-    \QueueJitsu\ConfigProvider::class,
-    \QueueJitsu\Scheduler\ConfigProvider::class,
-    \QueueJitsu\Cli\ConfigProvider::class,
-    \QueueJitsu\Scheduler\Cli\ConfigProvider::class,
 
 
     // Load application config in a pre-defined order in such a way that local settings
@@ -47,6 +36,6 @@ $aggregator = new ConfigAggregator([
 
     // Load development config if it exists
     new PhpFileProvider(realpath(__DIR__) . '/development.config.php'),
-], $cacheConfig['config_cache_path'], [\Laminas\ZendFrameworkBridge\ConfigPostProcessor::class]);
+], $cacheConfig['config_cache_path']);
 
 return $aggregator->getMergedConfig();

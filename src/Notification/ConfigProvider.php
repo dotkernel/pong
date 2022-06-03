@@ -4,15 +4,8 @@ declare(strict_types=1);
 
 namespace Notification;
 
-use Notification\Factory\NotificationHandlerFactory;
-use Notification\Factory\ProcessJobFactory;
-use Notification\Factory\ProcessRequestFactory;
 use Notification\Factory\QueueLoggerAdapterFactory;
-use Notification\Factory\RedisAdapterFactory;
 use Notification\Factory\SwooleWorkerFactory;
-use Notification\Handler\NotificationHandler;
-use Notification\Jobs\ProcessJob;
-use Notification\Jobs\ProcessRequest;
 use Notification\Worker\SwooleWorker;
 use Swoole\Server as SwooleServer;
 use Psr\Log\LoggerInterface;
@@ -36,8 +29,7 @@ class ConfigProvider
     public function __invoke(): array
     {
         return [
-            'dependencies' => $this->getDependencies(),
-            'templates' => $this->getTemplates(),
+            'dependencies' => $this->getDependencies()
         ];
     }
 
@@ -54,37 +46,11 @@ class ConfigProvider
             ],
             'factories' => [
                 PsrLoggerAdapter::class => QueueLoggerAdapterFactory::class,
-                SwooleWorker::class => SwooleWorkerFactory::class,
-                NotificationHandler::class => NotificationHandlerFactory::class,
-                ProcessJob::class => ProcessJobFactory::class,
-                ProcessRequest::class => ProcessRequestFactory::class,
-                \QueueJitsu\Job\Adapter\RedisAdapter::class => \QueueJitsu\Cli\Job\RedisAdapterFactory::class,
-                \QueueJitsu\Queue\Adapter\RedisAdapter::class => \QueueJitsu\Cli\Queue\RedisAdapterFactory::class,
-                \QueueJitsu\Worker\Adapter\RedisAdapter::class => \QueueJitsu\Cli\Worker\RedisAdapterFactory::class,
-                \QueueJitsu\Scheduler\Worker\Worker::class =>  \QueueJitsu\Scheduler\Worker\WorkerFactory::class,
-                \Notification\Adapter\RedisAdapter::class => RedisAdapterFactory::class,
+                SwooleWorker::class => SwooleWorkerFactory::class
             ],
             'aliases' => [
-                LoggerInterface::class => PsrLoggerAdapter::class,
-                \QueueJitsu\Job\Adapter\AdapterInterface::class => \QueueJitsu\Job\Adapter\RedisAdapter::class,
-                \QueueJitsu\Queue\Adapter\AdapterInterface::class => \QueueJitsu\Queue\Adapter\RedisAdapter::class,
-                \QueueJitsu\Worker\Adapter\AdapterInterface::class => \QueueJitsu\Worker\Adapter\RedisAdapter::class,
-                \QueueJitsu\Scheduler\Adapter\AdapterInterface::class => \Notification\Adapter\RedisAdapter::class
+                LoggerInterface::class => PsrLoggerAdapter::class
             ]
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function getTemplates(): array
-    {
-        return [
-            'paths' => [
-                'layout' => [__DIR__ . '/../../templates/layout'],
-                'notification-email' => [__DIR__ . '/../../templates/notification/email'],
-                'error' => [__DIR__ . '/../../templates/error'],
-            ],
         ];
     }
 }
