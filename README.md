@@ -1,5 +1,5 @@
 # pong
-Application for Queue , using swoole and Lamins // Mezzio
+Application for Queue , using swoole and Lamins
 
 # Installing DotKernel `pong`
 
@@ -49,11 +49,8 @@ The setup asks for configuration settings regarding injections (type `0` and hit
 
 ## Configuration - First Run
 
-- Remove the `.dist` extension from the files `config/autoload/local.php.dist`, `config/autoload/notification.local.php.dist`, `config/autoload/redis.local.php.dist`, `config/autoload/swoole.local.php.dist`
-- Edit `config/autoload/local.php` according to your dev machine and fill in the `database` configuration
-- Edit `config/autoload/notification.php` by filling the 'protocol' and 'host' configuration
-
-> Charset recommendation: utf8mb4_general_ci  
+- Remove the `.dist` extension from the files `config/autoload/local.php.dist`, `config/autoload/redis.local.php.dist`, `config/autoload/swoole.local.php.dist`
+- Edit `config/autoload/local.php` according to your dev machine
 
 ## Testing (Running)
 
@@ -64,11 +61,9 @@ Note: **Do not enable dev mode in production**
 ```bash
 $ redis-cli
 $ php bin/dot-swoole start
-$ vendor/bin/qjitsu work
-$ vendor/bin/qjitsu scheduler:run --interval=1
+$ php bin/cli.php process
+$ php bin/cli.php result
 ```
-
-> Tip: use --interval=1 on dev only
 
 **NOTE:**
 If you are still getting exceptions or errors regarding some missing services, try running the following command
@@ -76,8 +71,6 @@ If you are still getting exceptions or errors regarding some missing services, t
 ```bash
 $ php bin/clear-config-cache.php
 ```
-
-> If `config-cache.php` is present that config will be loaded regardless of the `ConfigAggregator::ENABLE_CACHE` in `config/autoload/mezzio.global.php`
 
 ## Daemons (services) files content
 ```bash
@@ -97,7 +90,7 @@ WantedBy=multi-user.target
 ```
 
 ```bash
-app-queue.service
+app-process-queue.service
 [Unit]
 Description=Queue startup service
 After=mysqld.service
@@ -109,16 +102,16 @@ Type=simple
 Restart=always
 RestartSec=1
 User=root
-ExecStart=/usr/bin/php /var/www/html/app-directory/vendor/bin/qjitsu work
+ExecStart=/usr/bin/php /var/www/html/app-directory/bin/cli.php process
 
 [Install]
 WantedBy=app-main.service
 ```
 
 ```bash
-app-queue-scheduler.service
+app-result-queue.service
 [Unit]
-Description=Queue scheduler startup service
+Description=Queue result service
 After=mysqld.service
 PartOf=app-main.service
 StartLimitIntervalSec=1
@@ -128,7 +121,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=root
-ExecStart=/usr/bin/php /var/www/html/app-directory/vendor/bin/qjitsu scheduler:run --interval=1
+ExecStart=/usr/bin/php /var/www/html/app-directory/bin/cli.php result
 
 [Install]
 WantedBy=app-main.service
