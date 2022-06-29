@@ -40,8 +40,7 @@ class SwooleWorkerDelegator
 
         // Register the fu nction for the event `receive`
         $server->on('receive', function ($server, $fd, $from_id, $data) use ($logger) {
-            // add raw job here
-            $this->client->rpush("queue::todo", [json_encode($data)]);
+            $this->client->rpush("queue::todo", $data);
             $logger->notice("Request with data: " . json_encode($data) . " added to queue.\n");
         });
 
